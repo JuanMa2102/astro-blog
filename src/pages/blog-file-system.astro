@@ -1,11 +1,10 @@
 ---
-import { getCollection } from "astro:content";
 import { siteConfig } from "../config/site-config";
 import MainLayout from "../layouts/MainLayout.astro";
-import TypeBlogPost from "src/components/TypeBlogPost.astro";
-import BlogPost from "src/components/BlogPost.astro";
+import BlogPost from "../components/BlogPost.astro";
 
-const blogPosts = await getCollection('blog', (post) => post.data.isDraft === false );
+const posts = await Astro.glob("../pages/posts-old/*.{md,mdx}");
+
 ---
 
 <MainLayout title="Home">
@@ -14,23 +13,14 @@ const blogPosts = await getCollection('blog', (post) => post.data.isDraft === fa
     <div class="container px-6 py-10 mx-auto">
         <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">{siteConfig.title}</h1>
 
-        <a href="/blog/1">Blog Paginado</a>
-        <a href="/authors">Autores</a>
-
         <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
             
 			{
-				blogPosts.map((post: any) => (
-					<TypeBlogPost post={post} />
+				posts.map((post) => (
+					<BlogPost {...post} />
 				))
 			}
         </div>
     </div>
 </section>
 </MainLayout>
-
-<style>
-    a {
-      @apply text-blue-500 hover:underline;
-    }
-</style>
